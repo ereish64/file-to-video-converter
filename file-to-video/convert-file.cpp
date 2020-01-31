@@ -12,10 +12,12 @@ using namespace std;
 int height = 480;
 int width = 640;
 
-string filename = "ball.stl";
+string filename;
 
 int main()
 {
+    cout << "Enter path of target file to convert to video\n";
+    cin >> filename;
     VideoWriter video("output.avi",CV_FOURCC('F','F','V','1'),30, Size(width,height),0);
     cout << "Output Video Spec:" << "\n";
     cout << "Height = " << to_string(height) << "\n";

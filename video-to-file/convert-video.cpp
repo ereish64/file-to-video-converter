@@ -70,6 +70,6 @@ int main()
 
     file.close();
     video.release();
-    cout << "DONE!";
+    cout << "DONE!\n";
     return 0;
 }
