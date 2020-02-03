@@ -33,25 +33,29 @@ int main()
         //cout << "processing frame: ";
         //cout << framecount << "\n";
         framecount += 1;
-        Mat currentimage(height,width, 0);//CV_8UC4);
+        Mat currentimage(Size(width,height), 0);//CV_8UC4);
         int vcount = 0;
         int hcount = 0;
         while(vcount<height)
         {
             char* byte = new char[0];
+            file.read(byte,1);
             if(file.eof()){
                 kill=true;
                 currentimage.at<uchar>(vcount,hcount) = 125;
-                if(hcount>width)
+                if(hcount==width)
                 {
-                    vcount++;
+                    vcount+=1;
                     hcount = 0;
                 }
-                hcount+=1;
+                else
+                {
+                    hcount+=1;
+                }
             }
             else
             {
-                file.read(byte,1);
+                //file.read(byte,1);
                 bitset<8> bits((int)byte[0]);
                 for(int i=0; i<8; i++)
                 {

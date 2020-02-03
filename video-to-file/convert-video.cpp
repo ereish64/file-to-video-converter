@@ -1,3 +1,4 @@
+#include <opencv2/imgproc/imgproc.hpp>
 #include <opencv2/core.hpp>
 #include <opencv2/highgui.hpp>
 #include <iostream>
@@ -12,25 +13,31 @@ using namespace std;
 int height = 480;
 int width = 640;
 
-string filename = "balloutput.stl";
+string filename;
 
 int main()
 {
     //VideoWriter video("output.avi",CV_FOURCC('F','F','V','1'),30, Size(width,height),0);
-    VideoCapture video("output.avi");
+    //VideoCapture video("output.avi");
+    VideoCapture video("output.avi",0);
     //cout << "Output Video Spec:" << "\n";
     //cout << "Height = " << to_string(height) << "\n";
     //cout << "Width = " << to_string(width) << "\n";
+    cout << "Enter output filename\n";
+    cin >> filename;
     ofstream file;
     file.open(filename, ios::binary);
 
     bool kill = false;
     int framecount = 0;
-    Mat frame;
     cout << "PROCESSING" << "\n";
-    video >> frame;
+    Mat frame(Size(width,height),0);
+    Mat rawframe;
+    frame.at<uchar>(0,0) = 255;
     while(frame.empty()==false)
     {
+        video >> rawframe;
+        cvtColor(rawframe, frame, CV_BGR2GRAY);
         int width = frame.size().width;
         int height = frame.size().height;
         for(int y=0; y<height; y++)
@@ -60,12 +67,11 @@ int main()
                 }
                 if(kill == false)
                 {
-                    const char byte[] = {(char)(bits.to_ulong() & 0xFF)};
+                    const char byte[] = {(char)bits.to_ulong()};// & 0xFF)};
                     file.write(byte,1);
                 }
             }
         }
-        video >> frame;
     }
 
     file.close();
