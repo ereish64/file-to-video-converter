@@ -25,3 +25,5 @@ If you encouter a problem with the code, submit a issue to the git repository an
 
 # How to help
 Convert-file.cpp has some kind of tiny memory leak and i can't find out what's causing it. If you can find out what is causing it, please let me know!
+
+I might add multithreading in the future.
