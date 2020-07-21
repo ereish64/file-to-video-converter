@@ -14,6 +14,12 @@ int width = 640;
 
 string filename;
 
+std::ifstream::pos_type filesize(const char* filename)
+{
+    std::ifstream in(filename, std::ifstream::ate | std::ifstream::binary);
+    return in.tellg(); 
+}
+
 int main()
 {
     cout << "Enter path of target file to convert to video\n";
@@ -30,8 +36,11 @@ int main()
     cout << "PROCESSING" << "\n";
     while(kill==false)
     {
-        //cout << "processing frame: ";
-        //cout << framecount << "\n";
+        if(framecount%100==0)
+        {
+            cout << "Reached Frame: ";
+            cout << framecount << "\n";
+        }
         framecount += 1;
         Mat currentimage(Size(width,height), 0);//CV_8UC4);
         int vcount = 0;
@@ -75,9 +84,15 @@ int main()
                     vcount += 1;
                 }
             }
+            delete byte;
         }
         video.write(currentimage);
         currentimage.release();
+        if(framecount%2000==0)
+        {
+            video.release();
+            VideoWriter video("output.avi",CV_FOURCC('F','F','V','1'),30, Size(width,height),0);
+        }
     }
     file.close();
     video.release();
